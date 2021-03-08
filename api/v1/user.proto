@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+option go_package = "github.com/lyouthzzz/go-web-layout/api/v1";
+
+package user.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service UserService {
+    rpc Get (GetUserRequest) returns (User) {
+        option (google.api.http) = {
+            get: "/v1/user/{id}"
+        };
+    }
+
+    rpc Create (CreateUserRequest) returns (User) {
+        option (google.api.http) = {
+            post: "/v1/user"
+            body: "user"
+        };
+    }
+
+    rpc Update (UpdateUserRequest) returns (User) {
+        option (google.api.http) = {
+            put: "/v1/user/{id}"
+            body: "user"
+        };
+    }
+
+    rpc Delete (DeleteUserRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/v1/user/{id}"
+        };
+    }
+}
+
+message empty {
+}
+
+message User {
+    string name = 1;
+    string password = 2;
+    string email = 3;
+}
+
+message GetUserRequest {
+    int32 id = 1;
+}
+
+message CreateUserRequest {
+    User user = 1;
+}
+
+message UpdateUserRequest {
+    int32 id = 1;
+    User user = 2;
+}
+
+message DeleteUserRequest {
+    int32 id = 1;
+}
