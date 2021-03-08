@@ -3,14 +3,13 @@ package v1
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/golang/protobuf/ptypes/empty"
 )
 
 type UserServiceHTTPServer interface {
 	Get(context.Context, *GetUserRequest) (*User, error)
 	Create(context.Context, *CreateUserRequest) (*User, error)
 	Update(context.Context, *UpdateUserRequest) (*User, error)
-	Delete(context.Context, *DeleteUserRequest) (*empty.Empty, error)
+	Delete(context.Context, *DeleteUserRequest) (*Empty, error)
 }
 
 type Render interface {

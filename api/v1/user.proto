@@ -5,7 +5,6 @@ option go_package = "github.com/lyouthzzz/go-web-layout/api/v1";
 package user.v1;
 
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 
 service UserService {
     rpc Get (GetUserRequest) returns (User) {
@@ -28,7 +27,7 @@ service UserService {
         };
     }
 
-    rpc Delete (DeleteUserRequest) returns (google.protobuf.Empty) {
+    rpc Delete (DeleteUserRequest) returns (empty) {
         option (google.api.http) = {
             delete: "/v1/user/{id}"
         };
