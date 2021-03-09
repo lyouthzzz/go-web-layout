@@ -11,6 +11,10 @@ type UserService struct {
 	uc domain.UserUsecase
 }
 
+func NewUserService(uc domain.UserUsecase) *UserService {
+	return &UserService{uc: uc}
+}
+
 func (s *UserService) Create(ctx context.Context, req *v1.CreateUserRequest) (*v1.User, error) {
 	user, err := s.uc.Create(ctx, &domain.User{Username: req.User.Name, Password: req.User.Password, Email: req.User.Email})
 	if err != nil {

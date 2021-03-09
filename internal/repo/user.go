@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"errors"
 	"github.com/lyouthzzz/go-web-layout/internal/domain"
 	"github.com/lyouthzzz/go-web-layout/pkg/gormx"
 	"gorm.io/gorm"
@@ -17,7 +18,7 @@ func NewUserRepository(db *gorm.DB) domain.UserRepository {
 
 func (u *UserRepository) Get(ctx context.Context, id int64) (user domain.User, err error) {
 	tx := u.db.WithContext(ctx)
-	if err = tx.Find(&user, id).Error; err != nil {
+	if err = tx.First(&user, id).Error; err != nil {
 		return
 	}
 	return
@@ -39,6 +40,9 @@ func (u *UserRepository) Update(ctx context.Context, id int64, user *domain.User
 	if err = tx.Where("id = ?", id).Omit("created_at", "updated_at").Updates(&user).Error; err != nil {
 		return
 	}
+	if tx.RowsAffected == 0 {
+		return errors.New("not found")
+	}
 	return
 }
 
@@ -46,6 +50,9 @@ func (u *UserRepository) Delete(ctx context.Context, id int64) (err error) {
 	tx := u.db.WithContext(ctx)
 	if err = tx.Where("id = ?", id).Delete(&domain.User{}).Error; err != nil {
 		return
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("not found")
 	}
 	return
 }

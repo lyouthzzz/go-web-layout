@@ -1,0 +1,10 @@
+httpserver:
+  host: 0.0.0.0
+  port: 10001
+
+database:
+  host: 172.81.212.232
+  port: 3306
+  user: root
+  password: root
+  dbname: web_layout
