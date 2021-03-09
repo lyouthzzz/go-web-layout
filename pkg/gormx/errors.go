@@ -6,7 +6,7 @@ import (
 )
 
 func IsDuplicateError(err error) bool {
-	if err != nil {
+	if err == nil {
 		return false
 	}
 	var mysqlErr mysql.MySQLError
