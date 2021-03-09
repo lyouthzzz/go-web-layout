@@ -1,23 +1,34 @@
 package domain
 
-import "context"
+import (
+	"context"
+	"github.com/lyouthzzz/go-web-layout/pkg/gormx"
+)
 
 type User struct {
-	Name     string
-	Password string
-	Email    string
+	gormx.Model
+	Username string `gorm:"column:username;type:char(20);not null"`
+	Nickname string `gorm:"column:nickname;type:char(20)"`
+	Password string `gorm:"column:password;type:char(30);not null"`
+	Email    string `gorm:"column:email;type:char(30);uniqueIndex:email_deleted;not null"`
+
+	DeletedAt gormx.DeletedAt `gorm:"column:deleted_at;default:0;uniqueIndex:email_deleted;not null"`
+}
+
+func (User) TableName() string {
+	return "user"
 }
 
 type UserUsecase interface {
 	Get(ctx context.Context, id int64) (User, error)
-	Create(ctx context.Context, username, password, email string) (User, error)
+	Create(ctx context.Context, user *User) (User, error)
 	Update(ctx context.Context, id int64, user *User) error
 	Delete(ctx context.Context, id int64) error
 }
 
 type UserRepository interface {
 	Get(ctx context.Context, id int64) (User, error)
-	Create(ctx context.Context, username, password, email string) (User, error)
+	Create(ctx context.Context, user *User) (User, error)
 	Update(ctx context.Context, id int64, user *User) error
 	Delete(ctx context.Context, id int64) error
 }

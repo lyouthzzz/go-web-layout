@@ -12,15 +12,15 @@ type UserService struct {
 }
 
 func (s *UserService) Create(ctx context.Context, req *v1.CreateUserRequest) (*v1.User, error) {
-	user, err := s.uc.Create(ctx, req.User.Name, req.User.Password, req.User.Email)
+	user, err := s.uc.Create(ctx, &domain.User{Username: req.User.Name, Password: req.User.Password, Email: req.User.Email})
 	if err != nil {
 		return nil, err
 	}
-	return &v1.User{Name: user.Name, Password: user.Password, Email: user.Email}, nil
+	return &v1.User{Name: user.Username, Password: user.Password, Email: user.Email}, nil
 }
 
 func (s *UserService) Update(ctx context.Context, req *v1.UpdateUserRequest) (*v1.User, error) {
-	user := &domain.User{Name: req.User.Name, Password: req.User.Password, Email: req.User.Email}
+	user := &domain.User{Username: req.User.Name, Password: req.User.Password, Email: req.User.Email}
 	err := s.uc.Update(ctx, int64(req.Id), user)
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func (s *UserService) Get(ctx context.Context, req *v1.GetUserRequest) (*v1.User
 	if err != nil {
 		return nil, err
 	}
-	return &v1.User{Name: user.Name, Password: user.Password, Email: user.Email}, nil
+	return &v1.User{Name: user.Username, Password: user.Password, Email: user.Email}, nil
 }
 
 func (s *UserService) Delete(ctx context.Context, req *v1.DeleteUserRequest) (*v1.Empty, error) {
