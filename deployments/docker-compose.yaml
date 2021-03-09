@@ -1,0 +1,12 @@
+version: "3.0"
+services:
+  web-layout:
+    image: ${IMAGE_WEB_LAYOUT}
+    volumes:
+      - /configs/config.yaml:/app/configs/config.yaml:ro
+    ports:
+      - 10010:10010
+    command:
+      - /app/layout
+      - -c
+      - /app/configs/config.yaml
