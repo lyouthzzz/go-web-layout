@@ -3,7 +3,7 @@ httpserver:
   port: 10001
 
 database:
-  host: 172.81.212.232
+  host:
   port: 3306
   user: root
   password: root
