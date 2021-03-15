@@ -1,6 +1,8 @@
 # go-web-layout
 
 ### generate grpc proto
+- https://github.com/favadi/protoc-go-inject-tag
+
 ```
 // step one
 cd api
