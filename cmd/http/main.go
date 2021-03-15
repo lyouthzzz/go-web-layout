@@ -6,6 +6,7 @@ import (
 	"github.com/lyouthzzz/go-web-layout/internal/config"
 	"github.com/lyouthzzz/go-web-layout/internal/server"
 	"github.com/urfave/cli"
+	"log"
 	"os"
 )
 
@@ -40,5 +41,8 @@ func main() {
 		return httpSvr.Start(context.TODO())
 	}
 
-	panic(app.Run(os.Args))
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

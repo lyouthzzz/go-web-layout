@@ -2,60 +2,107 @@ syntax = "proto3";
 
 option go_package = "github.com/lyouthzzz/go-web-layout/api/v1";
 
-package user.v1;
+package v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 service UserService {
-    rpc Get (GetUserRequest) returns (User) {
-        option (google.api.http) = {
-            get: "/v1/user/{id}"
-        };
-    }
+  rpc Login (UserLoginRequest) returns (UserLoginResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/login"
+    };
+  }
 
-    rpc Create (CreateUserRequest) returns (User) {
-        option (google.api.http) = {
-            post: "/v1/user"
-            body: "user"
-        };
-    }
+  rpc Logout (UserLogoutRequest) returns (empty) {
+    option (google.api.http) = {
+      post: "/v1/user/logout"
+    };
+  }
 
-    rpc Update (UpdateUserRequest) returns (User) {
-        option (google.api.http) = {
-            put: "/v1/user/{id}"
-            body: "user"
-        };
-    }
+  rpc Get (GetUserRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/v1/user/{id}"
+    };
+  }
 
-    rpc Delete (DeleteUserRequest) returns (empty) {
-        option (google.api.http) = {
-            delete: "/v1/user/{id}"
-        };
-    }
+  rpc Create (CreateUserRequest) returns (User) {
+    option (google.api.http) = {
+      post: "/v1/user"
+      body: "user"
+    };
+  }
+
+  rpc Update (UpdateUserRequest) returns (User) {
+    option (google.api.http) = {
+      put: "/v1/user/{id}"
+      body: "user"
+    };
+  }
+
+  rpc Delete (DeleteUserRequest) returns (empty) {
+    option (google.api.http) = {
+      delete: "/v1/user/{id}"
+    };
+  }
 }
 
 message empty {
 }
 
 message User {
-    string name = 1;
-    string password = 2;
-    string email = 3;
+  // @inject_tag: json:"name"
+  string name = 1;
+  // @inject_tag: json:"password,omitempty"
+  string password = 2;
+  // @inject_tag: json:"email"
+  string email = 3;
+}
+
+message Session {
+  string id = 1;
+  uint32 userId = 2;
+  google.protobuf.Timestamp ExpireAt = 3;
+}
+
+message UserLoginRequest {
+  // @inject_tag: json:"username" form:"username"
+  string username = 1;
+  // @inject_tag: json:"password" form:"password"
+  string password = 2;
+  // @inject_tag: json:"method" form:"method"
+  int32  method = 3;
+}
+
+message UserLoginResponse {
+  // data user
+  User user = 1;
+  // header session_id
+  Session session = 2;
+}
+
+message UserLogoutRequest {
+  string sessionId = 1;
 }
 
 message GetUserRequest {
-    int32 id = 1;
+  // @inject_tag: uri:"id"
+  int32 id = 1;
 }
 
 message CreateUserRequest {
-    User user = 1;
+  // @inject_tag: json:"user"
+  User user = 1;
 }
 
 message UpdateUserRequest {
-    int32 id = 1;
-    User user = 2;
+  // @inject_tag: uri:"id"
+  int32 id = 1;
+  // @inject_tag: json:"user"
+  User user = 2;
 }
 
 message DeleteUserRequest {
-    int32 id = 1;
+  // @inject_tag: uri:"id"
+  int32 id = 1;
 }

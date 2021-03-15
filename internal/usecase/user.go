@@ -13,6 +13,10 @@ func NewUserUsecase(repo domain.UserUsecase) domain.UserUsecase {
 	return &UserUsecase{repo: repo}
 }
 
+func (u *UserUsecase) GetByName(ctx context.Context, name string) (domain.User, error) {
+	return u.repo.GetByName(ctx, name)
+}
+
 func (u *UserUsecase) Get(ctx context.Context, id int64) (domain.User, error) {
 	return u.repo.Get(ctx, id)
 }

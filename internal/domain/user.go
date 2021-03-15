@@ -20,6 +20,8 @@ func (User) TableName() string {
 }
 
 type UserUsecase interface {
+	GetByName(ctx context.Context, name string) (User, error)
+
 	Get(ctx context.Context, id int64) (User, error)
 	Create(ctx context.Context, user *User) (User, error)
 	Update(ctx context.Context, id int64, user *User) error
@@ -27,6 +29,8 @@ type UserUsecase interface {
 }
 
 type UserRepository interface {
+	GetByName(ctx context.Context, name string) (User, error)
+
 	Get(ctx context.Context, id int64) (User, error)
 	Create(ctx context.Context, user *User) (User, error)
 	Update(ctx context.Context, id int64, user *User) error

@@ -8,6 +8,8 @@ import (
 )
 
 type UserServiceHTTPServer interface {
+	Login(context.Context, *UserLoginRequest) (*UserLoginResponse, error)
+	Logout(context.Context, *UserLogoutRequest) (*Empty, error)
 	Get(context.Context, *GetUserRequest) (*User, error)
 	Create(context.Context, *CreateUserRequest) (*User, error)
 	Update(context.Context, *UpdateUserRequest) (*User, error)
@@ -16,13 +18,42 @@ type UserServiceHTTPServer interface {
 
 type UserService struct {
 	server UserServiceHTTPServer
-	router gin.IRouter
+	router *gin.RouterGroup
 	render render.Render
 }
 
-func RegisterUserServiceHTTPServer(srv UserServiceHTTPServer, router gin.IRouter, render render.Render) {
-	s := UserService{server: srv, router: router, render: render}
+func RegisterUserServiceHTTPServer(srv UserServiceHTTPServer, routerGroup *gin.RouterGroup, render render.Render) {
+	s := UserService{server: srv, router: routerGroup, render: render}
 	s.registerRouter()
+}
+
+func (s *UserService) Login(c *gin.Context) {
+	var req UserLoginRequest
+	if err := c.ShouldBind(&req); err != nil {
+		s.render.Error(c, err)
+		return
+	}
+	loginResponse, err := s.server.Login(c.Request.Context(), &req)
+	if err != nil {
+		s.render.Error(c, err)
+		return
+	}
+	c.Header("session_id", loginResponse.Session.Id)
+	s.render.OK(c, loginResponse.User)
+}
+
+func (s *UserService) Logout(c *gin.Context) {
+	sessionId, err := c.Cookie("session_id")
+	if err != nil {
+		s.render.Error(c, err)
+		return
+	}
+	if _, err := s.server.Logout(c.Request.Context(), &UserLogoutRequest{SessionId: sessionId}); err != nil {
+		s.render.Error(c, err)
+		return
+	}
+	s.render.OK(c, nil)
+	return
 }
 
 func (s *UserService) GetUser(c *gin.Context) {
@@ -88,6 +119,8 @@ func (s *UserService) DeleteUser(c *gin.Context) {
 }
 
 func (s *UserService) registerRouter() {
+	s.router.POST("/user/login", s.Login)
+	s.router.POST("/user/logout", s.Logout)
 	s.router.GET("/user/:id", s.GetUser)
 	s.router.POST("/user", s.CreateUser)
 	s.router.PUT("/user/:id", s.UpdateUser)

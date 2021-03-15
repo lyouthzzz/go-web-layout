@@ -8,3 +8,8 @@ database:
   user: root
   password: root
   dbname: web_layout
+
+redis:
+  address: :6379
+  password:
+  db: 0

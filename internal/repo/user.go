@@ -16,6 +16,14 @@ func NewUserRepository(db *gorm.DB) domain.UserRepository {
 	return &UserRepository{db: db}
 }
 
+func (u *UserRepository) GetByName(ctx context.Context, name string) (user domain.User, err error) {
+	tx := u.db.WithContext(ctx)
+	if err = tx.Where("username = ?", name).First(&user).Error; err != nil {
+		return
+	}
+	return
+}
+
 func (u *UserRepository) Get(ctx context.Context, id int64) (user domain.User, err error) {
 	tx := u.db.WithContext(ctx)
 	if err = tx.First(&user, id).Error; err != nil {
