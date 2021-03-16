@@ -12,7 +12,7 @@ type sessionRepo struct {
 	rdb *redis.Client
 }
 
-func NewSessionRepo(rdb *redis.Client) domain.SessionRepository {
+func NewSessionRepo(rdb *redis.Client) domain.ISessionRepository {
 	return &sessionRepo{rdb: rdb}
 }
 

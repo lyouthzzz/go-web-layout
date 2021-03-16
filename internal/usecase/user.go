@@ -6,10 +6,10 @@ import (
 )
 
 type UserUsecase struct {
-	repo domain.UserRepository
+	repo domain.IUserRepository
 }
 
-func NewUserUsecase(repo domain.UserUsecase) domain.UserUsecase {
+func NewUserUsecase(repo domain.IUserUsecase) domain.IUserUsecase {
 	return &UserUsecase{repo: repo}
 }
 

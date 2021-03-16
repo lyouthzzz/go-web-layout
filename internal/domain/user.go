@@ -19,7 +19,7 @@ func (User) TableName() string {
 	return "user"
 }
 
-type UserUsecase interface {
+type IUserUsecase interface {
 	GetByName(ctx context.Context, name string) (User, error)
 
 	Get(ctx context.Context, id int64) (User, error)
@@ -28,7 +28,7 @@ type UserUsecase interface {
 	Delete(ctx context.Context, id int64) error
 }
 
-type UserRepository interface {
+type IUserRepository interface {
 	GetByName(ctx context.Context, name string) (User, error)
 
 	Get(ctx context.Context, id int64) (User, error)

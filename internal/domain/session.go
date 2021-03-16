@@ -11,13 +11,13 @@ type Session struct {
 	ExpireDuration time.Duration
 }
 
-type SessionUsecase interface {
+type ISessionUsecase interface {
 	Create(ctx context.Context, userId uint) (*Session, error)
 	Get(ctx context.Context, id string) (*Session, error)
 	Delete(ctx context.Context, id string) error
 }
 
-type SessionRepository interface {
+type ISessionRepository interface {
 	Create(ctx context.Context, session *Session) (*Session, error)
 	Get(ctx context.Context, id string) (*Session, error)
 	Delete(ctx context.Context, id string) error

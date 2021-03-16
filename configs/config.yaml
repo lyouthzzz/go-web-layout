@@ -3,13 +3,13 @@ httpserver:
   port: 10001
 
 database:
-  host:
+  host: 172.81.212.232
   port: 3306
   user: root
   password: root
   dbname: web_layout
 
 redis:
-  address: :6379
-  password:
+  address: 172.81.212.232:6379
+  password: root
   db: 0

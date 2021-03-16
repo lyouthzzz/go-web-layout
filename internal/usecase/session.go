@@ -10,10 +10,10 @@ import (
 
 type Session struct {
 	expireDuration time.Duration
-	repo           domain.SessionRepository
+	repo           domain.ISessionRepository
 }
 
-func NewSessionUsecase(sessionRepo domain.SessionRepository, expireDuration time.Duration) domain.SessionUsecase {
+func NewSessionUsecase(sessionRepo domain.ISessionRepository, expireDuration time.Duration) domain.ISessionUsecase {
 	return &Session{repo: sessionRepo, expireDuration: expireDuration}
 }
 

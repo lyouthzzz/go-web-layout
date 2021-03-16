@@ -10,11 +10,11 @@ import (
 
 type UserService struct {
 	v1.UnimplementedUserServiceServer
-	uc domain.UserUsecase
-	sc domain.SessionUsecase
+	uc domain.IUserUsecase
+	sc domain.ISessionUsecase
 }
 
-func NewUserService(uc domain.UserUsecase, sc domain.SessionUsecase) *UserService {
+func NewUserService(uc domain.IUserUsecase, sc domain.ISessionUsecase) *UserService {
 	return &UserService{uc: uc, sc: sc}
 }
 
