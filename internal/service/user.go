@@ -2,20 +2,23 @@ package service
 
 import (
 	"context"
+	"github.com/google/uuid"
+	"github.com/lyouthzzz/framework/pkg/auth/authn"
 	v1 "github.com/lyouthzzz/go-web-layout/api/v1"
 	"github.com/lyouthzzz/go-web-layout/internal/domain"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
+	"strings"
 )
 
 type UserService struct {
 	v1.UnimplementedUserServiceServer
-	uc domain.IUserUsecase
-	sc domain.ISessionUsecase
+	authN authn.Authenticator
+	uc    domain.IUserUsecase
 }
 
-func NewUserService(uc domain.IUserUsecase, sc domain.ISessionUsecase) *UserService {
-	return &UserService{uc: uc, sc: sc}
+func NewUserService(uc domain.IUserUsecase, authN authn.Authenticator) *UserService {
+	return &UserService{uc: uc, authN: authN}
 }
 
 func (s *UserService) Login(ctx context.Context, req *v1.UserLoginRequest) (*v1.UserLoginResponse, error) {
@@ -26,19 +29,19 @@ func (s *UserService) Login(ctx context.Context, req *v1.UserLoginRequest) (*v1.
 	if user.Password != req.Password {
 		return nil, errors.New("password incorrect")
 	}
-	session, err := s.sc.Create(ctx, user.ID)
-	if err != nil {
+	tokenAuth := &authn.TokenAuthentication{Token: strings.ReplaceAll(uuid.New().String(), "-", "")}
+	if err := s.authN.WriteAuthentication(ctx, tokenAuth, user); err != nil {
 		return nil, err
 	}
 	return &v1.UserLoginResponse{
 		User:    &v1.User{Name: user.Username, Email: user.Email},
-		Session: &v1.Session{UserId: cast.ToUint32(user.ID), Id: session.Id},
+		Session: &v1.Session{UserId: cast.ToUint32(user.ID), Id: tokenAuth.Token},
 	}, nil
 }
 
 func (s *UserService) Logout(ctx context.Context, req *v1.UserLogoutRequest) (*v1.Empty, error) {
-	err := s.sc.Delete(ctx, req.SessionId)
-	if err != nil {
+	tokenAuth := authn.TokenAuthentication{Token: req.SessionId}
+	if err := s.authN.DeleteAuthentication(ctx, tokenAuth); err != nil {
 		return &v1.Empty{}, err
 	}
 	return &v1.Empty{}, nil

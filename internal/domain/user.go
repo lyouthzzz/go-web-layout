@@ -3,6 +3,7 @@ package domain
 import (
 	"context"
 	"github.com/lyouthzzz/go-web-layout/pkg/gormx"
+	"strconv"
 )
 
 type User struct {
@@ -17,6 +18,10 @@ type User struct {
 
 func (User) TableName() string {
 	return "user"
+}
+
+func (u User) GetUID() string {
+	return strconv.Itoa(int(u.ID))
 }
 
 type IUserUsecase interface {

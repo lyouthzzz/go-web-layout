@@ -3,14 +3,15 @@ module github.com/lyouthzzz/go-web-layout
 go 1.15
 
 require (
-	github.com/favadi/protoc-go-inject-tag v1.1.0 // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis/v8 v8.7.1
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/uuid v1.2.0
 	github.com/jinzhu/configor v1.2.1
+	github.com/lyouthzzz/framework v0.0.0-20210317072630-21e8ca36010d
 	github.com/pkg/errors v0.9.1
+	github.com/rs/zerolog v1.20.0
 	github.com/spf13/cast v1.3.1
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli v1.22.5

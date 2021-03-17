@@ -4,23 +4,63 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/lyouthzzz/go-web-layout/pkg/app"
+	"github.com/rs/zerolog"
 )
 
+type Middlewares struct {
+	Session gin.HandlerFunc
+}
+
+type Servers struct {
+	UserServer *UserServer
+}
+
+type HttpOption struct {
+	Host        string
+	Port        int
+	Servers     *Servers
+	Middlewares *Middlewares
+	Logger      *zerolog.Logger
+}
+
 type HttpServer struct {
-	host   string
-	port   int
-	engine *gin.Engine
+	host        string
+	port        int
+	engine      *gin.Engine
+	servers     *Servers
+	middlewares *Middlewares
+	logger      *zerolog.Logger
 }
 
-func NewHttpServer(host string, port int, engine *gin.Engine) app.Lifecycle {
-	return &HttpServer{host: host, port: port, engine: engine}
+func NewHttpServer(opt *HttpOption) *HttpServer {
+	return &HttpServer{host: opt.Host, port: opt.Port, servers: opt.Servers, middlewares: opt.Middlewares, logger: opt.Logger}
 }
 
-func (httpSvr *HttpServer) Start(ctx context.Context) error {
-	return httpSvr.engine.Run(fmt.Sprintf(fmt.Sprintf("%s:%d", httpSvr.host, httpSvr.port)))
+func (svr *HttpServer) BuildRouter() error {
+	engine := gin.New()
+
+	apiV1 := engine.Group("/api/v1")
+	apiV1.Use(gin.Recovery(), gin.Logger())
+
+	sessionRequired := svr.middlewares.Session
+	userSvr := svr.servers.UserServer
+
+	apiV1.POST("/user/login", userSvr.Login)
+	apiV1.POST("/user/logout", userSvr.Logout)
+
+	apiV1.GET("/user/:id", sessionRequired, userSvr.GetUser)
+	apiV1.POST("/user", sessionRequired, userSvr.CreateUser)
+	apiV1.PUT("/user/:id", sessionRequired, userSvr.UpdateUser)
+	apiV1.DELETE("/user/:id", sessionRequired, userSvr.DeleteUser)
+
+	svr.engine = engine
+	return nil
 }
 
-func (httpSvr *HttpServer) Stop(ctx context.Context) error {
+func (svr *HttpServer) Start(ctx context.Context) error {
+	return svr.engine.Run(fmt.Sprintf(fmt.Sprintf("%s:%d", svr.host, svr.port)))
+}
+
+func (svr *HttpServer) Stop(ctx context.Context) error {
 	return nil
 }
