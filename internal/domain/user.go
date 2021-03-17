@@ -2,7 +2,7 @@ package domain
 
 import (
 	"context"
-	"github.com/lyouthzzz/go-web-layout/pkg/gormx"
+	"github.com/lyouthzzz/framework/pkg/gormx"
 	"strconv"
 )
 

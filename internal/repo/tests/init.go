@@ -1,8 +1,8 @@
 package tests
 
 import (
+	"github.com/lyouthzzz/framework/pkg/gormx"
 	"github.com/lyouthzzz/go-web-layout/internal/domain"
-	"github.com/lyouthzzz/go-web-layout/pkg/gormx"
 	"gorm.io/gorm"
 )
 
