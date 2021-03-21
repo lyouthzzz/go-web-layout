@@ -36,8 +36,9 @@ func (s *UserServer) Login(c *gin.Context) {
 		s.render.Error(c, err)
 		return
 	}
-	c.Header("session_id", loginResponse.Session.Id)
-	s.render.OK(c, loginResponse.User)
+
+	c.SetCookie("session_id", loginResponse.Session.Id, -1, "/", "", false, true)
+	s.render.OK(c, nil)
 }
 
 func (s *UserServer) Logout(c *gin.Context) {

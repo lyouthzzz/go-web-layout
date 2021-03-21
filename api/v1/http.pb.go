@@ -47,9 +47,9 @@ func (svr *HttpServer) BuildRouter() error {
 
 	apiV1.POST("/user/login", userSvr.Login)
 	apiV1.POST("/user/logout", userSvr.Logout)
+	apiV1.POST("/user/register", userSvr.CreateUser)
 
 	apiV1.GET("/user/:id", sessionRequired, userSvr.GetUser)
-	apiV1.POST("/user", sessionRequired, userSvr.CreateUser)
 	apiV1.PUT("/user/:id", sessionRequired, userSvr.UpdateUser)
 	apiV1.DELETE("/user/:id", sessionRequired, userSvr.DeleteUser)
 
