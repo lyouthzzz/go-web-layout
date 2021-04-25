@@ -8,6 +8,7 @@ import (
 	"github.com/lyouthzzz/go-web-layout/internal/auth/store"
 	"github.com/pkg/errors"
 	"net/http"
+	"time"
 )
 
 type UserInfo struct {
@@ -45,6 +46,7 @@ func (t *TokenAuthN) Authenticate(ctx context.Context, authentication interface{
 	if err != nil {
 		return nil, err
 	}
+	_ = t.store.ExpireKey(ctx, key, time.Hour)
 	return &UserInfo{Id: userId}, nil
 }
 

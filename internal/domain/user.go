@@ -2,8 +2,9 @@ package domain
 
 import (
 	"context"
-	"github.com/lyouthzzz/framework/pkg/gormx"
 	"strconv"
+
+	"github.com/lyouthzzz/framework/pkg/gormx"
 )
 
 type User struct {
@@ -16,8 +17,14 @@ type User struct {
 	DeletedAt gormx.DeletedAt `gorm:"column:deleted_at;default:0;uniqueIndex:email_deleted;not null"`
 }
 
+var EmptyUser = User{Model: gormx.Model{ID: 0}}
+
 func (User) TableName() string {
 	return "user"
+}
+
+func (u User) IsEmpty() bool {
+	return u.ID == 0
 }
 
 func (u User) GetUID() string {

@@ -1,6 +1,8 @@
 package server
 
 import (
+	"time"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/lyouthzzz/framework/pkg/app"
 	"github.com/lyouthzzz/framework/pkg/gormx"
@@ -14,7 +16,6 @@ import (
 	"github.com/lyouthzzz/go-web-layout/internal/service"
 	"github.com/lyouthzzz/go-web-layout/internal/usecase"
 	"github.com/rs/zerolog/log"
-	"time"
 )
 
 func NewHttpServer(conf *config.Config) app.Lifecycle {

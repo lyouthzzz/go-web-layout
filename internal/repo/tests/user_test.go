@@ -3,10 +3,11 @@ package tests
 import (
 	"context"
 	"fmt"
+	"testing"
+
 	"github.com/lyouthzzz/go-web-layout/internal/domain"
 	"github.com/lyouthzzz/go-web-layout/internal/repo"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestUser(t *testing.T) {

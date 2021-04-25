@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 )
@@ -49,7 +50,7 @@ func (svr *HttpServer) BuildRouter() error {
 	apiV1.POST("/user/logout", userSvr.Logout)
 	apiV1.POST("/user/register", userSvr.CreateUser)
 
-	apiV1.GET("/user/:id", sessionRequired, userSvr.GetUser)
+	apiV1.GET("/user/:id", userSvr.GetUser)
 	apiV1.PUT("/user/:id", sessionRequired, userSvr.UpdateUser)
 	apiV1.DELETE("/user/:id", sessionRequired, userSvr.DeleteUser)
 
@@ -58,7 +59,7 @@ func (svr *HttpServer) BuildRouter() error {
 }
 
 func (svr *HttpServer) Start(ctx context.Context) error {
-	return svr.engine.Run(fmt.Sprintf(fmt.Sprintf("%s:%d", svr.host, svr.port)))
+	return svr.engine.Run(fmt.Sprintf("%s:%d", svr.host, svr.port))
 }
 
 func (svr *HttpServer) Stop(ctx context.Context) error {

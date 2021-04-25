@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+
 	"github.com/lyouthzzz/go-web-layout/internal/domain"
 )
 
@@ -9,7 +10,7 @@ type UserUsecase struct {
 	repo domain.IUserRepository
 }
 
-func NewUserUsecase(repo domain.IUserUsecase) domain.IUserUsecase {
+func NewUserUsecase(repo domain.IUserRepository) domain.IUserUsecase {
 	return &UserUsecase{repo: repo}
 }
 

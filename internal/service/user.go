@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	"strings"
+
 	"github.com/google/uuid"
 	"github.com/lyouthzzz/framework/pkg/auth/authn"
 	v1 "github.com/lyouthzzz/go-web-layout/api/v1"
 	"github.com/lyouthzzz/go-web-layout/internal/domain"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
-	"strings"
 )
 
 type UserService struct {
@@ -69,7 +70,7 @@ func (s *UserService) Get(ctx context.Context, req *v1.GetUserRequest) (*v1.User
 	if err != nil {
 		return nil, err
 	}
-	return &v1.User{Name: user.Username, Password: user.Password, Email: user.Email}, nil
+	return &v1.User{Name: user.Username, Email: user.Email}, nil
 }
 
 func (s *UserService) Delete(ctx context.Context, req *v1.DeleteUserRequest) (*v1.Empty, error) {

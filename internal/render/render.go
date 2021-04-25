@@ -1,8 +1,10 @@
 package render
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 type Render interface {
@@ -20,6 +22,7 @@ type APIRender struct {
 }
 
 func (ar *APIRender) Error(c *gin.Context, err error) {
+	err = errors.Cause(err)
 	c.JSON(http.StatusOK, &cmd{Code: -1, Data: nil, Message: err.Error()})
 }
 
