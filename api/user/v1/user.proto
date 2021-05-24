@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package user.v1;
+
+option go_package = "github.com/lyouthzzz/go-web-layout/api/user/v1;v1";
+option java_multiple_files = true;
+option java_package = "com.weimob.api.user.v1";
+option java_outer_classname = "UserProtoV1";
+
+service User {
+    rpc GetUser(GetUserRequest) returns (GetUserReply) {}
+    rpc CreateUser(CreateUserRequest) returns (CreateUserReply) {}
+    rpc Update (UpdateUserRequest) returns (UpdateUserReply) {}
+    rpc Delete (DeleteUserRequest) returns (empty) {}
+}
+
+message empty {}
+
+message CreateUserRequest {
+    // @inject_tag: json:"username" form:"username" binding:"required"
+    string username = 1;
+    // @inject_tag: json:"password" form:"password" binding:"required"
+    string password = 2;
+    // @inject_tag: json:"email" form:"email" binding:"required"
+    string email = 3;
+}
+
+message CreateUserReply {
+    int64 id = 1;
+}
+
+message UpdateUserRequest {
+    // @inject_tag: json:"id" form:"id" binding:"required"
+    int64  id = 1;
+    // @inject_tag: json:"username" form:"username"
+    string username = 2;
+    // @inject_tag: json:"password" form:"password"
+    string password = 3;
+    // @inject_tag: json:"email" form:"email"
+    string email = 4;
+}
+
+message UpdateUserReply {
+    int64 id = 1;
+    string username = 2;
+    string password = 3;
+    string email = 4;
+}
+
+message GetUserRequest {
+    // @inject_tag: json:"id" form:"id" uri:"id" binding:"required"
+    int64 id = 1;
+}
+
+message GetUserReply {
+    int64 id = 1;
+    string username = 2;
+    string email = 3;
+}
+
+message DeleteUserRequest {
+    int64 id = 1;
+}

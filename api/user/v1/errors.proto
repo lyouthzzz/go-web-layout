@@ -1,0 +1,13 @@
+syntax = "proto3";
+package user.errors.v1;
+
+option go_package = "github.com/lyouthzzz/go-web-layout/api/user/errors.v1;v1";
+option java_multiple_files = true;
+option java_package = "com.lyouthzzz.api.user.errors.v1";
+option java_outer_classname = "UserProtoV1Error";
+
+enum ErrorReason {
+  USER_NOT_FOUND = 0;
+  USER_ALREADY_EXISTS = 1;
+  INTERNALE_ERROR = 2;
+}
