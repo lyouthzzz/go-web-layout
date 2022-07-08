@@ -1,0 +1,13 @@
+server:
+  http:
+    network: tcp
+    addr: :8080
+    timeout: 10s
+  grpc:
+    network: tcp
+    addr: :8081
+    timeout: 10s
+  data:
+    database:
+      driver: mysql
+      source: root:root@tcp(localhost:3306)/weblayout?charset=utf8mb4&parseTime=True&loc=Local

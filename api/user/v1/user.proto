@@ -2,62 +2,66 @@ syntax = "proto3";
 
 package user.v1;
 
-option go_package = "github.com/lyouthzzz/go-web-layout/api/user/v1;v1";
-option java_multiple_files = true;
-option java_package = "com.weimob.api.user.v1";
-option java_outer_classname = "UserProtoV1";
+option go_package = "github.com/lyouthzzz/go-web-layout/api/user/v1;userV1";
 
-service User {
-    rpc GetUser(GetUserRequest) returns (GetUserReply) {}
-    rpc CreateUser(CreateUserRequest) returns (CreateUserReply) {}
-    rpc Update (UpdateUserRequest) returns (UpdateUserReply) {}
-    rpc Delete (DeleteUserRequest) returns (empty) {}
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (GetUserReply) {
+    option(google.api.http) = {get: "/users/{uid}"};
+    option(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "获取用户", tags: "工程目录"};
+  }
+  rpc CreateUser(CreateUserRequest) returns (CreateUserReply) {
+    option(google.api.http) = {post: "/users", body: "*"};
+    option(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "创建用户", tags: "工程目录"};
+  }
+  rpc Update (UpdateUserRequest) returns (UpdateUserReply) {
+    option(google.api.http) = {put: "/users/{uid}", body: "*"};
+    option(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "更新用户", tags: "工程目录"};
+  }
+  rpc Delete (DeleteUserRequest) returns (Empty) {
+    option(google.api.http) = {delete: "/users/{uid}"};
+    option(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "删除用户", tags: "工程目录"};
+  }
 }
 
-message empty {}
+message Empty {}
 
 message CreateUserRequest {
-    // @inject_tag: json:"username" form:"username" binding:"required"
-    string username = 1;
-    // @inject_tag: json:"password" form:"password" binding:"required"
-    string password = 2;
-    // @inject_tag: json:"email" form:"email" binding:"required"
-    string email = 3;
+  string username = 1;
+  string password = 2;
+  string email = 3;
 }
 
 message CreateUserReply {
-    int64 id = 1;
+  int64 uid = 1;
 }
 
 message UpdateUserRequest {
-    // @inject_tag: json:"id" form:"id" binding:"required"
-    int64  id = 1;
-    // @inject_tag: json:"username" form:"username"
-    string username = 2;
-    // @inject_tag: json:"password" form:"password"
-    string password = 3;
-    // @inject_tag: json:"email" form:"email"
-    string email = 4;
+  int64  uid = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
 }
 
 message UpdateUserReply {
-    int64 id = 1;
-    string username = 2;
-    string password = 3;
-    string email = 4;
+  int64 uid = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
 }
 
 message GetUserRequest {
-    // @inject_tag: json:"id" form:"id" uri:"id" binding:"required"
-    int64 id = 1;
+  int64 uid = 1;
 }
 
 message GetUserReply {
-    int64 id = 1;
-    string username = 2;
-    string email = 3;
+  int64 uid = 1;
+  string username = 2;
+  string email = 3;
 }
 
 message DeleteUserRequest {
-    int64 id = 1;
+  int64 uid = 1;
 }
