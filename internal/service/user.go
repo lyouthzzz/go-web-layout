@@ -2,67 +2,55 @@ package service
 
 import (
 	"context"
+	userbiz "github.com/lyouthzzz/go-web-layout/internal/biz/user"
 
-	"github.com/douyu/jupiter/pkg/xlog"
-	v1 "github.com/lyouthzzz/go-web-layout/api/user/v1"
-	"github.com/lyouthzzz/go-web-layout/internal/domain"
-	"github.com/lyouthzzz/go-web-layout/internal/usecase"
+	userV1 "github.com/lyouthzzz/go-web-layout/api/user/v1"
+	userdomain "github.com/lyouthzzz/go-web-layout/internal/domain/user"
 )
 
-type UserRepo interface {
-	GetUser(ctx context.Context, userId uint64) (*domain.User, error)
-	CreateUser(ctx context.Context, user *domain.User) (*domain.User, error)
-	UpdateUser(ctx context.Context, user *domain.User) (*domain.User, error)
-	DeleteUser(ctx context.Context, userId uint64) error
-	ListUser(ctx context.Context, pageNum, pageSize uint64) ([]*domain.User, error)
-}
-
 type UserService struct {
-	v1.UnimplementedUserServer
-	uc  *usecase.UserUsecase
-	log *xlog.Logger
+	userV1.UnimplementedUserServiceServer
+	user *userbiz.Usecase
 }
 
-func NewUserService(uc *usecase.UserUsecase, logger *xlog.Logger) *UserService {
-	return &UserService{uc: uc, log: logger.With(xlog.String("pkg", "service/user"))}
+func NewUserService(uc *userbiz.Usecase) *UserService {
+	return &UserService{user: uc}
 }
 
-func (svc *UserService) GetUser(ctx context.Context, getUserReq *v1.GetUserRequest) (*v1.GetUserReply, error) {
-	user, err := svc.uc.GetUser(ctx, uint64(getUserReq.Id))
+func (svc *UserService) GetUser(ctx context.Context, req *userV1.GetUserRequest) (*userV1.GetUserReply, error) {
+	_user, err := svc.user.GetUser(ctx, uint(req.Uid))
 	if err != nil {
 		return nil, err
 	}
-	return &v1.GetUserReply{Id: int64(user.Id)}, nil
+	return &userV1.GetUserReply{Uid: int64(_user.UID), Username: _user.Username, Email: _user.Email}, nil
 }
 
-func (svc *UserService) CreateUser(ctx context.Context, createUserReq *v1.CreateUserRequest) (*v1.CreateUserReply, error) {
-	user, err := svc.uc.CreateUser(ctx, &domain.User{
-		Username: createUserReq.Username,
-		Password: createUserReq.Password,
-		Email:    createUserReq.Email,
+func (svc *UserService) CreateUser(ctx context.Context, req *userV1.CreateUserRequest) (*userV1.CreateUserReply, error) {
+	_user, err := svc.user.CreateUser(ctx, &userdomain.User{
+		Username: req.Username,
+		Email:    req.Email,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &v1.CreateUserReply{Id: int64(user.Id)}, nil
+	return &userV1.CreateUserReply{Uid: int64(_user.UID)}, nil
 }
 
-func (svc *UserService) UpdateUser(ctx context.Context, updateUserReq *v1.UpdateUserRequest) (*v1.UpdateUserReply, error) {
-	user, err := svc.uc.UpdateUser(ctx, &domain.User{
-		Username: updateUserReq.Username,
-		Password: updateUserReq.Password,
-		Email:    updateUserReq.Email,
+func (svc *UserService) UpdateUser(ctx context.Context, req *userV1.UpdateUserRequest) (*userV1.UpdateUserReply, error) {
+	user, err := svc.user.UpdateUser(ctx, &userdomain.User{
+		Username: req.Username,
+		Email:    req.Email,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &v1.UpdateUserReply{Id: int64(user.Id)}, nil
+	return &userV1.UpdateUserReply{Uid: int64(user.UID)}, nil
 }
 
-func (svc *UserService) DeleteUser(ctx context.Context, deleteUserReq *v1.DeleteUserRequest) (*v1.Empty, error) {
-	err := svc.uc.DeleteUser(ctx, uint64(deleteUserReq.Id))
+func (svc *UserService) DeleteUser(ctx context.Context, req *userV1.DeleteUserRequest) (*userV1.Empty, error) {
+	err := svc.user.DeleteUser(ctx, uint(req.Uid))
 	if err != nil {
 		return nil, err
 	}
-	return &v1.Empty{}, nil
+	return &userV1.Empty{}, nil
 }
