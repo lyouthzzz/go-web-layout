@@ -7,7 +7,7 @@ server:
     network: tcp
     addr: :8081
     timeout: 10s
-  data:
-    database:
-      driver: mysql
-      source: root:root@tcp(localhost:3306)/weblayout?charset=utf8mb4&parseTime=True&loc=Local
+data:
+  database:
+    driver: mysql
+    source: root:admin123@tcp(localhost:3306)/web_layout?charset=utf8mb4&parseTime=True&loc=Local
