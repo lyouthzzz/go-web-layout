@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+//go:generate mockgen -source order.go -destination ../../mock/domain/order/order_mock.go -package=order
+
 type IOrderClient interface {
 	GetOrder(context.Context, uint) (*Order, error)
 }
