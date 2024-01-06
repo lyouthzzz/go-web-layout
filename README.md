@@ -1,8 +1,10 @@
 工程目录example
 
 ## 开发环境
-- go version: >= go1.16  
-- IDE: 建议goland
+- go version: go1.20  
+- IDE: goland
 
-## 包管理
-`Go Modules`
+## 镜像构建
+```bash
+docker build --target api -f Dockerfile -t go-web-layout .
+```

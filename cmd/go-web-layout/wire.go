@@ -1,4 +1,6 @@
-//+build wireinject
+//go:build wireinject
+// +build wireinject
+
 //
 //The build tag makes sure the stub is not built in the final build.
 
@@ -11,11 +13,10 @@ import (
 	"github.com/lyouthzzz/go-web-layout/internal/biz"
 	"github.com/lyouthzzz/go-web-layout/internal/conf"
 	"github.com/lyouthzzz/go-web-layout/internal/data"
-	"github.com/lyouthzzz/go-web-layout/internal/facade"
 	"github.com/lyouthzzz/go-web-layout/internal/server"
 	"github.com/lyouthzzz/go-web-layout/internal/service"
 )
 
 func initApp(*conf.Server, *conf.Data, log.Logger) (*kratos.App, func(), error) {
-	panic(wire.Build(data.ProviderSet, facade.ProviderSet, biz.ProviderSet, service.ProviderSet, server.ProviderSet, newApp))
+	panic(wire.Build(data.ProviderSet, biz.ProviderSet, service.ProviderSet, server.ProviderSet, newApp))
 }

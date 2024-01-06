@@ -2,15 +2,15 @@ package server
 
 import (
 	"github.com/go-kratos/kratos/v2/transport/http"
-	orderV1 "github.com/lyouthzzz/go-web-layout/api/order/v1"
-	userV1 "github.com/lyouthzzz/go-web-layout/api/user/v1"
+	apiV1 "github.com/lyouthzzz/go-web-layout/api/v1"
 	"github.com/lyouthzzz/go-web-layout/internal/conf"
 	"github.com/lyouthzzz/go-web-layout/internal/service"
 )
 
-func NewHTTPServer(config *conf.Server, user *service.UserService, order *service.OrderService) (*http.Server, error) {
+func NewHTTPServer(config *conf.Server, serviceSet *service.Set) (*http.Server, error) {
 	httpServer := http.NewServer(http.Network(config.Http.Network), http.Address(config.Http.Addr), http.Timeout(config.Http.Timeout.AsDuration()))
-	userV1.RegisterUserServiceHTTPServer(httpServer, user)
-	orderV1.RegisterOrderServiceHTTPServer(httpServer, order)
+
+	apiV1.RegisterUserServiceHTTPServer(httpServer, serviceSet.User)
+
 	return httpServer, nil
 }

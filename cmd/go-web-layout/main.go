@@ -31,6 +31,7 @@ func main() {
 	flag.Parse()
 
 	logger := log.With(log.NewStdLogger(os.Stdout))
+
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagConfig),

@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package user.v1;
+
+option go_package = "github.com/lyouthzzz/go-web-layout/api/v1;apiV1";
+
+import "google/api/annotations.proto";
+
+service UserService {
+  // 获取用户
+  rpc GetUser(GetUserRequest) returns (User) {
+    option(google.api.http) = {get: "/users/{uid}"};
+  }
+  // 创建用户
+  rpc CreateUser(CreateUserRequest) returns (Empty) {
+    option(google.api.http) = {post: "/users", body: "*"};
+  }
+  // 更新用户
+  rpc UpdateUser (UpdateUserRequest) returns (Empty) {
+    option(google.api.http) = {put: "/users/{uid}", body: "*"};
+  }
+  // 删除用户
+  rpc DeleteUser (DeleteUserRequest) returns (Empty) {
+    option(google.api.http) = {delete: "/users/{uid}"};
+  }
+  // 获取用户列表
+  rpc ListUser (ListUserRequest) returns (ListUserReply) {
+    option(google.api.http) = {get: "/users"};
+  }
+}
+
+message Empty {}
+
+message User {
+  int64 uid = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
+}
+
+message CreateUserRequest {
+  // 用户名
+  string username = 1;
+  // 用户密码
+  string password = 2;
+  // 用户邮箱
+  string email = 3;
+}
+
+message CreateUserReply {
+  // 用户ID
+  int64 uid = 1;
+}
+
+message UpdateUserRequest {
+  // 用户ID
+  int64  uid = 1;
+  // 用户密码
+  string password = 2;
+  // 用户邮箱
+  string email = 3;
+}
+
+message GetUserRequest {
+  // 用户ID
+  int64 uid = 1;
+}
+
+message DeleteUserRequest {
+  // 用户ID
+  int64 uid = 1;
+}
+
+message ListUserRequest {
+  // 偏移量
+  int64 offset = 1;
+  // 每页数量
+  int64 limit = 2;
+}
+
+message ListUserReply {
+  // 总数
+  int64 total = 1;
+  // 用户列表
+  repeated User items = 2;
+}

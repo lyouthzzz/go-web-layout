@@ -1,21 +1,34 @@
 module github.com/lyouthzzz/go-web-layout
 
-go 1.16
+go 1.20
 
 require (
-	github.com/go-kratos/kratos/v2 v2.3.0
-	github.com/golang/mock v1.4.4
+	github.com/go-kratos/kratos/v2 v2.7.2
 	github.com/google/wire v0.5.0
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.2
-	github.com/kr/text v0.2.0 // indirect
-	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
-	github.com/stretchr/testify v1.7.1
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
-	google.golang.org/genproto v0.0.0-20220525015930-6ca3db687a9d
-	google.golang.org/grpc v1.46.2
-	google.golang.org/protobuf v1.28.0
-	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
+	google.golang.org/grpc v1.56.3
+	google.golang.org/protobuf v1.31.0
 	gorm.io/driver/mysql v1.3.3
 	gorm.io/gorm v1.23.5
+)
+
+require (
+	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/go-kratos/aegis v0.2.0 // indirect
+	github.com/go-playground/form/v4 v4.2.0 // indirect
+	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/google/uuid v1.3.0 // indirect
+	github.com/gorilla/mux v1.8.0 // indirect
+	github.com/imdario/mergo v0.3.16 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
+	github.com/kr/text v0.2.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/sync v0.3.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
+	google.golang.org/genproto v0.0.0-20230629202037-9506855d4529 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

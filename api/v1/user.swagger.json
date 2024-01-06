@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/user/v1/user.proto",
+    "title": "api/v1/user.proto",
     "version": "version not set"
   },
   "tags": [
@@ -17,6 +17,45 @@
   ],
   "paths": {
     "/users": {
+      "get": {
+        "summary": "获取用户列表",
+        "operationId": "UserService_ListUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "offset",
+            "description": "偏移量",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "limit",
+            "description": "每页数量",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      },
       "post": {
         "summary": "创建用户",
         "operationId": "UserService_CreateUser",
@@ -24,7 +63,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateUserReply"
+              "$ref": "#/definitions/v1Empty"
             }
           },
           "default": {
@@ -45,7 +84,7 @@
           }
         ],
         "tags": [
-          "工程目录"
+          "UserService"
         ]
       }
     },
@@ -57,7 +96,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1GetUserReply"
+              "$ref": "#/definitions/v1User"
             }
           },
           "default": {
@@ -70,6 +109,7 @@
         "parameters": [
           {
             "name": "uid",
+            "description": "用户ID",
             "in": "path",
             "required": true,
             "type": "string",
@@ -77,12 +117,12 @@
           }
         ],
         "tags": [
-          "工程目录"
+          "UserService"
         ]
       },
       "delete": {
         "summary": "删除用户",
-        "operationId": "UserService_Delete",
+        "operationId": "UserService_DeleteUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -100,6 +140,7 @@
         "parameters": [
           {
             "name": "uid",
+            "description": "用户ID",
             "in": "path",
             "required": true,
             "type": "string",
@@ -107,17 +148,17 @@
           }
         ],
         "tags": [
-          "工程目录"
+          "UserService"
         ]
       },
       "put": {
         "summary": "更新用户",
-        "operationId": "UserService_Update",
+        "operationId": "UserService_UpdateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1UpdateUserReply"
+              "$ref": "#/definitions/v1Empty"
             }
           },
           "default": {
@@ -130,6 +171,7 @@
         "parameters": [
           {
             "name": "uid",
+            "description": "用户ID",
             "in": "path",
             "required": true,
             "type": "string",
@@ -142,21 +184,20 @@
             "schema": {
               "type": "object",
               "properties": {
-                "username": {
-                  "type": "string"
-                },
                 "password": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "用户密码"
                 },
                 "email": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "用户邮箱"
                 }
               }
             }
           }
         ],
         "tags": [
-          "工程目录"
+          "UserService"
         ]
       }
     }
@@ -189,48 +230,44 @@
         }
       }
     },
-    "v1CreateUserReply": {
-      "type": "object",
-      "properties": {
-        "uid": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
     "v1CreateUserRequest": {
       "type": "object",
       "properties": {
         "username": {
-          "type": "string"
+          "type": "string",
+          "title": "用户名"
         },
         "password": {
-          "type": "string"
+          "type": "string",
+          "title": "用户密码"
         },
         "email": {
-          "type": "string"
+          "type": "string",
+          "title": "用户邮箱"
         }
       }
     },
     "v1Empty": {
       "type": "object"
     },
-    "v1GetUserReply": {
+    "v1ListUserReply": {
       "type": "object",
       "properties": {
-        "uid": {
+        "total": {
           "type": "string",
-          "format": "int64"
+          "format": "int64",
+          "title": "总数"
         },
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1User"
+          },
+          "title": "用户列表"
         }
       }
     },
-    "v1UpdateUserReply": {
+    "v1User": {
       "type": "object",
       "properties": {
         "uid": {
