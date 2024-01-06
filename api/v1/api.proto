@@ -6,6 +6,7 @@ option go_package = "github.com/lyouthzzz/go-web-layout/api/v1;apiV1";
 
 import "google/api/annotations.proto";
 
+// 用户API服务
 service UserService {
   // 获取用户
   rpc GetUser(GetUserRequest) returns (User) {
