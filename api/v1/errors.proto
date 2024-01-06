@@ -3,11 +3,12 @@ syntax = "proto3";
 package api;
 import "errors/errors.proto";
 
-option go_package = "github.com/lyouthzzz/go-web-layout/api;api";
+option go_package = "github.com/lyouthzzz/go-web-layout/api/v1;apiV1";
 
 enum ErrorReason {
   option (errors.default_code) = 500;
+  option (errors.default_message) = "未知错误";
 
-  BAD_REQUEST = 0 [(errors.code) = 400];
+  UNKNOWN = 0;
   NOT_FOUNT = 1 [(errors.code) = 404];
 }
